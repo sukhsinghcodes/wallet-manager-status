@@ -16,10 +16,11 @@ async function main() {
       throw new Error('Networks not found. Something wrong with /health endpoint');
     }
 
-    output += `Networks: \n`;
     Object.entries(result.data.networks).forEach(([name, network]) => {
-      const n = network as { status: string };
-      output += `${name}: ${(n.status as string) === 'OK' ? '✅' : '❌'}\n`;
+      const n = network as { status: string; wallets: any };
+      output += `*${name}*: ${(n.status as string) === 'OK' ? '✅' : '❌'} | Unusable wallets: ${
+        Object.entries(n.wallets.unusableWallets).length
+      }\n`;
     });
   } catch (error) {
     console.error(error);
